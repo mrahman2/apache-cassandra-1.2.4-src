@@ -20,7 +20,9 @@ package org.apache.cassandra.thrift;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
 import java.util.zip.DataFormatException;
@@ -289,6 +291,19 @@ public class CassandraServer implements Cassandra.Iface
     public List<ColumnOrSuperColumn> get_slice(ByteBuffer key, ColumnParent column_parent, SlicePredicate predicate, ConsistencyLevel consistency_level)
     throws InvalidRequestException, UnavailableException, TimedOutException
     {
+    	//java.nio.CharBuffer key1 = CharBuffer.allocate(key.capacity());
+    	//key1 = Charset.forName("ISO-8859-1").decode(key);
+    	logger.debug("DEBUG MUNTASIR: hack key with read delay value: " + key.asCharBuffer().toString());
+    	//StringBuffer sb = new StringBuffer();
+    	//while(true) {
+    		//char ch1 = key1.get();
+    		//sb.append(ch1);
+    		//if(ch1 == 'u') {
+    		//	break;
+    		//}
+    	//}
+    	//long read_delay = Long.parseLong(sb.toString());
+    	//logger.debug("DEBUG MUNTASIR: hack read delay value: " + read_delay);
         if (startSessionIfRequested())
         {
             Map<String, String> traceParameters = ImmutableMap.of("key", ByteBufferUtil.bytesToHex(key),
