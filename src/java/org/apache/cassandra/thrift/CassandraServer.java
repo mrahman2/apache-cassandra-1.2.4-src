@@ -294,7 +294,9 @@ public class CassandraServer implements Cassandra.Iface
     	//java.nio.CharBuffer key1 = CharBuffer.allocate(key.capacity());
     	//key1 = Charset.forName("ISO-8859-1").decode(key);
     	//String s = new String(Charset.forName("ISO-8859-1").decode(key).toString());
-    	int read_delay = key.getInt();
+    	//int read_delay = key.getInt();
+    	int read_delay = key.duplicate().getInt();
+    	//key.flip();
     	logger.debug("DEBUG MUNTASIR: hack key with read delay value: " + read_delay);
     	//StringBuffer sb = new StringBuffer();
     	//while(true) {
