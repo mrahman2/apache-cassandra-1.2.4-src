@@ -295,9 +295,22 @@ public class CassandraServer implements Cassandra.Iface
     	//key1 = Charset.forName("ISO-8859-1").decode(key);
     	//String s = new String(Charset.forName("ISO-8859-1").decode(key).toString());
     	//int read_delay = key.getInt();
-    	int read_delay = key.duplicate().getInt();
+    	//key.position(key.position() + Integer.SIZE);
+    	ByteBuffer other = key.duplicate();
+    	int read_delay = other.getInt();
     	//key.flip();
-    	logger.debug("DEBUG MUNTASIR: hack key with read delay value: " + read_delay);
+    	
+    	//try {
+    		//String s1 = new String(Charset.forName("UTF-8").decode(key).toString());
+    		//String s1 = new String(key.array(), "UTF-8");
+    		//String s2 = new String(Charset.forName("UTF-8").decode(other).toString());
+    		//String s2 = new String(other.array(), "UTF-8");
+    	logger.info("DEBUG MUNTASIR: hack key with read delay value: " + read_delay + "key with rdelay: " + key.toString() + " main key: " + other.toString());
+    	//}
+    	//catch(Exception e) {
+    		//logger.info("NEW ERROR");
+    	//}	
+    	
     	//StringBuffer sb = new StringBuffer();
     	//while(true) {
     		//char ch1 = key1.get();
@@ -326,7 +339,7 @@ public class CassandraServer implements Cassandra.Iface
             ClientState cState = state();
             String keyspace = cState.getKeyspace();
             state().hasColumnFamilyAccess(keyspace, column_parent.column_family, Permission.SELECT);
-            return multigetSliceInternal(keyspace, Collections.singletonList(key), column_parent, predicate, consistency_level, read_delay).get(key);
+            return multigetSliceInternal(keyspace, Collections.singletonList(other), column_parent, predicate, consistency_level, read_delay).get(other);
         }
         catch (RequestValidationException e)
         {
